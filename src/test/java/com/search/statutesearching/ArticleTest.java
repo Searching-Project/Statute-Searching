@@ -36,7 +36,7 @@ class ArticleTest {
         stopWatch.stop();
 
         stopWatch.start("full text index 사용한 쿼리");
-        articleRepository.search3(keyword);
+        articleRepository.search3(keyword,keyword);
         stopWatch.stop();
 
         // then

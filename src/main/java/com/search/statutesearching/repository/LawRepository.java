@@ -20,10 +20,11 @@ public interface LawRepository extends JpaRepository<Law,String> {
     List<Law> search2(@Param("keyword")String keyword);
 
     //full text index parser ngram
-    @Query(value = "select * FROM LAW as l WHERE MATCH(l.koran_name) AGAINST(:keyword IN BOOLEAN MODE)" +
-            "union select * FROM LAW as l WHERE MATCH(l.shorter_name) AGAINST(:keyword IN BOOLEAN MODE)"
+    @Query(value = "select *(select * FROM LAW as l WHERE MATCH(l.koran_name) AGAINST(:keyword IN BOOLEAN MODE)" +
+            "union select * FROM LAW as l WHERE MATCH(l.shorter_name) AGAINST(:keyword IN BOOLEAN MODE))as a2 order by case when a2.koran_name = :original then 1 when a2.shorter_name = :original then 2 else 3 end"
             ,nativeQuery = true )
-    List<Law> search3(@Param("keyword")String keyword);
+    List<Law> search3(@Param("keyword")String keyword,@Param("original")String original);
+
 }
 
 

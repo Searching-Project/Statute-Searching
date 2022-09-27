@@ -36,7 +36,7 @@ class LawTest {
         stopWatch.stop();
 
         stopWatch.start("full text index 사용한 쿼리");
-        lawRepository.search3(keyword);
+        lawRepository.search3(keyword,keyword);
         stopWatch.stop();
 
         // then

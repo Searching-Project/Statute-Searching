@@ -27,10 +27,12 @@ public class LawService {
         List<Law> lawList = lawRepository.search2(keyword);
         return ResponseDto.success(lawList);
     }
+
     @Transactional
     public ResponseDto<?> search3(String keyword) {
+        String original = keyword;
         keyword = getAnd(keyword);
-        List<Law> lawList = lawRepository.search3(keyword);
+        List<Law> lawList = lawRepository.search3(keyword, original);
         return ResponseDto.success(lawList);
     }
 

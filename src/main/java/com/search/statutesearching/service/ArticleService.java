@@ -31,11 +31,11 @@ public class ArticleService {
 
     @Transactional
     public ResponseDto<?> search3(String keyword) {
+        String original = keyword;
         keyword = getAnd(keyword);
-        List<Article> articleList = articleRepository.search3(keyword);
+        List<Article> articleList = articleRepository.search3(keyword,original);
         return ResponseDto.success(articleList);
     }
-
 
     //"검색어1" OR "검색어2"가 포함된 데이터를 조회
     public String getOr(String str){
