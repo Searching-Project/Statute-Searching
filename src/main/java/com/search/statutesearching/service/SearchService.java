@@ -1,20 +1,17 @@
 package com.search.statutesearching.service;
 
-
-import com.search.statutesearching.dto.reponse.*;
+import com.search.statutesearching.dto.reponse.SearchResDto;
 import com.search.statutesearching.dto.reponse.search.*;
 import com.search.statutesearching.exception.CustomException;
 import com.search.statutesearching.repository.LawRepository;
-import com.search.statutesearching.repository.PrecedentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
 import static com.search.statutesearching.exception.ErrorCode.RESULT_NOT_FOUND;
 
 @RequiredArgsConstructor
@@ -23,11 +20,12 @@ import static com.search.statutesearching.exception.ErrorCode.RESULT_NOT_FOUND;
 public class SearchService {
 
     private final LawRepository lawRepository;
-    private final PrecedentRepository precedentRepository;
 
     @Transactional
-    public ResponseDto<?> search(String keyword){
-        throw new CustomException(RESULT_NOT_FOUND);
+    public List<SearchResDto> search(String keyword, Pageable pageable){
+        List<SearchResDto> searchResDto =lawRepository.search00(keyword,pageable);
+        if(searchResDto==null || searchResDto.size()==0) throw new CustomException(RESULT_NOT_FOUND);
+        return searchResDto;
     }
 
     public List<SearchDetailResDto> convertToDetailDto(List<SearchResDto> searchResDtos) {
@@ -45,16 +43,16 @@ public class SearchService {
 
         for (SearchResDto searchResult : searchResDtos) {
             String lawSN = searchResult.getLawsn();
-            String koreanName = searchResult.getKorean_name();
-            String shorterName = searchResult.getShorter_name();
-            Long aArticleId = searchResult.getA_article_id();
-            Long pArticleId = searchResult.getP_article_id();
+            String koreanName = searchResult.getKoreanName();
+            String shorterName = searchResult.getShorterName();
+            Long aArticleId = searchResult.getAArticleId();
+            Long pArticleId = searchResult.getPArticleId();
             String articleTitle = searchResult.getTitle();
             String articleContent = searchResult.getContent();
-            Long pParagraphId = searchResult.getP_paragrah_id();
-            Long hParagraphId = searchResult.getH_paragrah_id();
-            String paragraphContent = searchResult.getParagrah_content();
-            String hoContent = searchResult.getHo_content();
+            Long pParagraphId = searchResult.getPParagraphId();
+            Long hParagraphId = searchResult.getHParagraphId();
+            String paragraphContent = searchResult.getParagraphContent();
+            String hoContent = searchResult.getHoContent();
 
             // 1단계 : 같은 항의 연속된 호인지 판별하기
             boolean continuousHo = Objects.equals(lastPId, hParagraphId);
