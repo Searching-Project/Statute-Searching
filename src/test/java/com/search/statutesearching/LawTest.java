@@ -5,7 +5,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.util.StopWatch;
+
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 class LawTest {
@@ -28,6 +32,22 @@ class LawTest {
         // when
         stopWatch.start("검색 쿼리");
         lawRepository.search0(keyword);
+        stopWatch.stop();
+
+        // then
+        System.out.println(stopWatch.prettyPrint());
+    }
+
+    @Test
+    void testPageable(){
+        // given
+        StopWatch stopWatch = new StopWatch();
+
+
+        Pageable pageable = PageRequest.of(0, 10);
+        // when
+        stopWatch.start("검색 쿼리");
+        lawRepository.search00(keyword, pageable);
         stopWatch.stop();
 
         // then
