@@ -20,6 +20,19 @@ class LawTest {
        keyword = "법령";
     }
 
+    @Test
+    void test(){
+        // given
+        StopWatch stopWatch = new StopWatch();
+
+        // when
+        stopWatch.start("검색 쿼리");
+        lawRepository.search0(keyword);
+        stopWatch.stop();
+
+        // then
+        System.out.println(stopWatch.prettyPrint());
+    }
 
     @Test
     void index_test() {
