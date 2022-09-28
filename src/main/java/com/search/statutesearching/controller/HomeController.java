@@ -10,6 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 public class HomeController {
     @RequestMapping(value = "/home", method= RequestMethod.GET)
     public String goHome(HttpServletRequest request) {
-        return "content/home";
+        return "page/index";
     }
 }
