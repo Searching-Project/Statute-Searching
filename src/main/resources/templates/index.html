@@ -13,78 +13,24 @@
                 crossorigin="anonymous"></script>
 <!--        <link rel="stylesheet" type="text/css" href="/css/style.css">-->
         <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="/static/css/style.css">
+        <script src="/static/js/main.js"></script>
         <title>법령 검색</title>
-        <style>
-            .main-logo{
-                width: 100%;
-                height: 200px;
+        <script>
+            function execSearch(){
+                let query = $('#query').val()
+                $.ajax({
+                    type: 'GET',
+                    url: `/search?query = ${query}`,
+                    success: function(response){
 
-                background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQubtRBItU8hateTAyH846E5oGi4-F8g0LJNw&usqp=CAU');
-                background-position: center;
-                background-size: cover;
+                    }
+                })
+            }
+            function addHTML(){
 
-                color: white;
-
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
             }
-            *{
-                font-family: 'Gowun Dodum', sans-serif;
-            }
-            .main-logo > h1{
-                font-size: 30px;
-            }
-            .container1{
-                display: flex;
-                flex-direction: column;
-                align-items: center; /* 수직축 */
-                justify-content: center; /* 수평 */
-            }
-            .form-control{
-                width: 498px;
-                height: 48px;
-                font-size: 16px;
-                padding: 7px 16px 8px;
-                vertical-align: top;
-            }
-            .pull-right{
-                margin-top:40px;
-            }
-            button{
-                height: 48px;
-                font-size: 16px;
-                padding: 7px 16px 8px;
-                vertical-align: top;
-            }
-            .searching-result{
-                margin-top:40px;
-                width: 95%;
-                max-width: 700px;
-                padding: 20px;
-                box-shadow: 0px 0px 10px 0px black;
-            }
-            .searching-result > h2 {
-                margin-bottom : 30px;
-            }
-            .law-result{
-                display: inline-flex;
-                flex-direction: row;
-            }
-            .law-result > h4{
-                margin-right: 50px;
-            }
-            .paragraph-result{
-                margin-top : 30px;
-            }
-            .paragraph-details > ul{
-                display: block;
-            }
-            .paragraph-details > ul > li{
-                display: list-item;
-            }
-        </style>
+        </script>
     </head>
 
     <body>
@@ -95,7 +41,7 @@
         <table class="pull-right">
             <tr>
                 <td>
-                    <input type="text" class="form-control"
+                    <input id = "query" type="text" class="form-control"
                            placeholder="검색어 입력" name="searchText" maxlength="100">
                 </td>
                 <td>
