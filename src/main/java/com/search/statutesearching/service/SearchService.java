@@ -6,8 +6,10 @@ import com.search.statutesearching.exception.CustomException;
 import com.search.statutesearching.repository.LawRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 
 import java.util.List;
 
@@ -21,8 +23,8 @@ public class SearchService {
     private final LawRepository lawRepository;
 
     @Transactional
-    public List<SearchResDto> search(String keyword){
-        List<SearchResDto> searchResDto =lawRepository.search0(keyword);
+    public List<SearchResDto> search(String keyword, Pageable pageable){
+        List<SearchResDto> searchResDto =lawRepository.search00(keyword,pageable);
         if(searchResDto==null || searchResDto.size()==0) throw new CustomException(RESULT_NOT_FOUND);
 
         return searchResDto;
