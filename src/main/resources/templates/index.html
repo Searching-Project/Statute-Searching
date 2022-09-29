@@ -63,6 +63,16 @@
             }
             .searching-result{
                 margin-top:40px;
+                padding: 20px;
+                width: 900px;
+
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+            .searching-box{
+                margin-top: 20px;
                 width: 95%;
                 max-width: 700px;
                 padding: 20px;
@@ -89,6 +99,13 @@
             }
         </style>
         <script>
+            $(document).ready(function(){
+                $('#query').on('keypress', function(e){
+                    if (e.key == 'Enter'){
+                        execSearch();
+                    }
+                })
+            })
             function execSearch(){
                 let query = $('#query').val()
                 $.ajax({
@@ -97,33 +114,67 @@
                     contentType: "application/json",
                     success: function(response){
                         console.log(response)
+                        for (let i = 0; i < response['data'].length; i++){
+                            let itemDto = response['data'][i];
+                            let tempHtml = addHTML(itemDto);
+                            $('#result-box').append(tempHtml);
+                        }
                     }
                 })
             }
             function addHTML(itemDto){
+                // for (let i = 0; i<itemDto['articles'].length; i++){
+                //     let tempArticle = itemDto['articles'][i];
+                //     let tempHtml = `<div class = "searching-box">
+                //                         <h2 style="color: royalblue">법령</h2>
+                //                         <div class = "law-result">
+                //                             <h4>${itemDto.koreanName}</h4>
+                //                             <h4>${itemDto.shorterName}</h4>
+                //                         </div>
+                //                         <div class = "paragraph-result">
+                //                             <h4>조문</h4>
+                //                             <div class = "paragraph-details">
+                //                                 <ul>
+                //                                     <li>
+                //                                         <p>1조</p>
+                //                                     </li>
+                //                                 </ul>
+                //                             </div>
+                //                         </div>
+                //                     </div>`
+                // }
+                let array = [
+                    {'articleContent':'1번'},
+                    {'articleContent':'2번'},
+                    {'articleContent':'3번'},
+                    {'articleContent':'4번'}
+                ]
+                let temp = itemDto.articles.map((item) => `<li>
+                                 <p>${item.articleContent}</p>
+                            </li>`)
+                let temp2 = ''
+                for (let i = 0; i < temp.length; i++){
+                    temp2 += temp[i]
+                }
+                console.log(itemDto.articles.map(item => item.articleContent));
                 return `<div class = "searching-box">
-                <h2 style="color: royalblue">법령</h2>
-                <div class = "law-result">
-                    <h4>법령명 한글법</h4>
-                    <h4>법령명 약칭</h4>
-                </div>
-                <div class = "paragraph-result">
-                    <h4>조문</h4>
-                    <div class = "paragraph-details">
-                        <ul>
-                            <li>
-                                <p>1조</p>
-                            </li>
-                            <li>
-                                <p>2조</p>
-                            </li>
-                            <li>
-                                <p>3조</p>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>`
+                            <h2 style="color: royalblue">법령</h2>
+                            <div class = "law-result">
+                                <h4>${itemDto.koreanName}</h4>
+                                <h4>${itemDto.shorterName}</h4>
+                            </div>
+                            <div class = "paragraph-result">
+                                <h4>조문</h4>
+                                <div class = "paragraph-details">
+                                    <ul>
+                                        ${temp2}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>`
+            }
+            function addArticle(itemDto){
+
             }
         </script>
     </head>
