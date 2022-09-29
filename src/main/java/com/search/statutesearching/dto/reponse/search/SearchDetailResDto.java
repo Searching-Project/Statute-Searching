@@ -14,9 +14,9 @@ public class SearchDetailResDto {
     private String lawSN;
     private String koreanName;
     private String shorterName;
-    private List<SearchDetailArticleResDto> searchDetails;
+    private List<SearchDetailArticleResDto> articles;
 
     public void addArticle(SearchDetailArticleResDto article) {
-        this.searchDetails.add(article);
+        this.articles.add(article);
     }
 }
