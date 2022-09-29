@@ -19,9 +19,9 @@ public class SearchController {
         return ResponseDto.success(searchService.search(keyword,pageable));
     }
 
-    /*@GetMapping("/simple/{keyword}")
-    public ResponseDto<?> searchSimple(@PathVariable String keyword, @PageableDefault(page = 0, size = 20) Pageable pageable){
-        return ResponseDto.success(searchService.searchSimple(keyword,pageable));
-    }*/
+    @GetMapping("/simple/{keyword}")
+    public ResponseDto<?> simpleSearch(@PathVariable String keyword, @PageableDefault(page = 0, size = 20) Pageable pageable){
+        return ResponseDto.success(searchService.simpleSearch(keyword,pageable));
+    }
 
 }
