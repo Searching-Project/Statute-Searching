@@ -113,6 +113,7 @@
                     url: `/api/search/${query}`,
                     contentType: "application/json",
                     success: function(response){
+                        $('#result-box').empty()
                         console.log(response)
                         for (let i = 0; i < response['data'].length; i++){
                             let itemDto = response['data'][i];
@@ -143,12 +144,6 @@
                 //                         </div>
                 //                     </div>`
                 // }
-                let array = [
-                    {'articleContent':'1번'},
-                    {'articleContent':'2번'},
-                    {'articleContent':'3번'},
-                    {'articleContent':'4번'}
-                ]
                 let temp = itemDto.articles.map((item) => `<li>
                                  <p>${item.articleContent}</p>
                             </li>`)
@@ -196,29 +191,6 @@
             </tr>
         </table>
         <div id = "result-box" class = "searching-result">
-            <div class = "searching-box">
-                <h2 style="color: royalblue">법령</h2>
-                <div class = "law-result">
-                    <h4>법령명 한글법</h4>
-                    <h4>법령명 약칭</h4>
-                </div>
-                <div class = "paragraph-result">
-                    <h4>조문</h4>
-                    <div class = "paragraph-details">
-                        <ul>
-                            <li>
-                                <p>1조</p>
-                            </li>
-                            <li>
-                                <p>2조</p>
-                            </li>
-                            <li>
-                                <p>3조</p>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 
