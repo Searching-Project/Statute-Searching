@@ -15,8 +15,13 @@ public class SearchController {
     private final SearchService searchService;
 
     @GetMapping("/{keyword}")
-    public ResponseDto<?> s  earch(@PathVariable String keyword, @PageableDefault(page = 0, size = 20) Pageable pageable){
-        System.out.println(keyword);
+    public ResponseDto<?> search(@PathVariable String keyword, @PageableDefault(page = 0, size = 20) Pageable pageable){
         return ResponseDto.success(searchService.search(keyword,pageable));
     }
+
+    /*@GetMapping("/simple/{keyword}")
+    public ResponseDto<?> searchSimple(@PathVariable String keyword, @PageableDefault(page = 0, size = 20) Pageable pageable){
+        return ResponseDto.success(searchService.searchSimple(keyword,pageable));
+    }*/
+
 }
