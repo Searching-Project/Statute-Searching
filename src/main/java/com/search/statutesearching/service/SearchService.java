@@ -1,7 +1,6 @@
 package com.search.statutesearching.service;
 
 import com.search.statutesearching.dto.reponse.SearchResDto;
-import com.search.statutesearching.dto.reponse.SearchResDto1;
 import com.search.statutesearching.dto.reponse.search.*;
 import com.search.statutesearching.exception.CustomException;
 import com.search.statutesearching.repository.LawRepository;
