@@ -28,7 +28,6 @@ public interface LawRepository extends JpaRepository<Law,String> {
             ")" +
             "LIMIT 20 OFFSET 1",nativeQuery = true )
     List<SearchResDto> search0(@Param("keyword")String keyword);
-
     //페이징 처리
     @Query(value = "(" +
             "SELECT t.lawsn, t.korean_name, t.shorter_name, t.content, t.title, t.a_article_id, t.p_article_id, t.paragraph_id AS p_paragraph_id, t.paragraph_content, h.paragraph_id AS h_paragraph_id, h.ho_content FROM (SELECT aa.lawsn, aa.korean_name, aa.shorter_name, aa.content, aa.title, aa.article_id AS a_article_id, p.article_id AS p_article_id, p.paragraph_content, p.paragraph_id  FROM (SELECT l.lawsn, l.korean_name, l.shorter_name , a.content, a.title, a.article_id FROM (SELECT * FROM law AS l2 where MATCH(l2.korean_name, l2.shorter_name) AGAINST(:keyword IN NATURAL LANGUAGE MODE )) AS l         " +
