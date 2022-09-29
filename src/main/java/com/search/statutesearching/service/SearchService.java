@@ -9,9 +9,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
 import static com.search.statutesearching.exception.ErrorCode.RESULT_NOT_FOUND;
 
 @RequiredArgsConstructor
@@ -22,9 +24,9 @@ public class SearchService {
     private final LawRepository lawRepository;
 
     @Transactional
-    public List<SearchDetailResDto> search(String keyword, Pageable pageable){
-        List<SearchResDto> searchResDto =lawRepository.search00(keyword,pageable);
-        if(searchResDto==null || searchResDto.size()==0) throw new CustomException(RESULT_NOT_FOUND);
+    public List<SearchDetailResDto> search(String keyword, Pageable pageable) {
+        List<SearchResDto> searchResDto = lawRepository.search00(keyword, pageable);
+        if (searchResDto == null || searchResDto.size() == 0) throw new CustomException(RESULT_NOT_FOUND);
         return convertToDetailDto(searchResDto);
     }
 
@@ -45,9 +47,9 @@ public class SearchService {
         SearchDetailArticleResDto prevArticleDto = null;       // 한 조문에 연속된 항일 경우, 갱신하기 위한 이전 조문
         SearchDetailParagraphResDto prevParagraphDto = null;       // 한 항에 연속된 호일 경우, 갱신하기 위한 이전 항
 
-        String lastLawSN = "000000";
         Long lastPId = 0L;      // 마지막 항 id 저장 - 연속된 호 판별용
         Long lastAId = 0L;      // 마지막 조문 id 저장 - 연속된 항 판별용
+        String lastLawSN = "000000";
 
         for (SearchResDto searchResult : searchResDtos) {
             String lawSN = searchResult.getLawsn();
@@ -80,16 +82,16 @@ public class SearchService {
                 hos.add(SearchDetailHoResDto.builder().hoContent(hoContent).build());
 
                 paragraph = SearchDetailParagraphResDto.builder()
-                        .paragraphId((pParagraphId != null) ? pParagraphId : hParagraphId )
+                        .paragraphId((pParagraphId != null) ? pParagraphId : hParagraphId)
                         .paragraphContent(paragraphContent)
                         .hos(hos)
                         .build();
-
                 prevParagraphDto = paragraph;
             }
 
             // 2단계 : 같은 조문의 연속된 항인지 판별하기
             boolean continuousParagraph = Objects.equals(lastAId, pArticleId);
+            lastAId = aArticleId;
 
             // 2-1. 연속된 항이라면, 항만 추가하고 반복문 넘기기
             if (continuousParagraph && paragraph != null) {
@@ -97,7 +99,6 @@ public class SearchService {
                 continue;
             }
 
-            SearchDetailArticleResDto article = null;
             List<SearchDetailParagraphResDto> paragraphs = new ArrayList<>();
 
             if (paragraph != null) {
@@ -105,7 +106,13 @@ public class SearchService {
                 paragraphs.add(paragraph);
             }
 
-            if (articleContent != null) {
+            // 3단계 : 같은 법령의 연속된 조문인지 판별하기
+            boolean continuousArticle = Objects.equals(lastLawSN, lawSN);
+            lastLawSN = lawSN;
+
+            SearchDetailArticleResDto article = null;
+
+            if (aArticleId != null) {
                 article = SearchDetailArticleResDto.builder()
                         .articleId((aArticleId != null) ? aArticleId : pArticleId)
                         .articleTitle(articleTitle)
@@ -115,28 +122,25 @@ public class SearchService {
                 prevArticleDto = article;
             }
 
-            // 3단계 : 같은 법령의 연속된 조문인지 판별하기
-            boolean continuousArticle = Objects.equals(lastLawSN, lawSN);
-
             // 3-1. 연속된 조문이라면, 이전 법령에 조문 추가하고 반복문 넘기기
-            if (continuousArticle && articleContent != null) {
+            if (continuousArticle && article != null) {
                 prevDetailDto.addArticle(article);
                 continue;
             }
 
             List<SearchDetailArticleResDto> articles = new ArrayList<>();
 
-            if (article != null) {
-                // 3-2. 연속된 조문이 아니라면, 새로운 조문 만들기
-                articles.add(article);
-            }
+            // 3-2. 연속된 조문이 아니라면, 새로운 조문 만들기
+            articles.add(article);
 
+            // 4. 법령 만들기
             SearchDetailResDto law = SearchDetailResDto.builder()
                     .lawSN(lawSN)
                     .koreanName(koreanName)
                     .shorterName(shorterName)
                     .articles(articles)
                     .build();
+            prevDetailDto = law;
 
             laws.add(law);
         }
