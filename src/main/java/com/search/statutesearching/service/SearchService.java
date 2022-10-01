@@ -39,11 +39,12 @@ public class SearchService {
         return convertToDetailDto(searchResDto);
     }
 
+    // 단순 검색 - 법령, 조문 그룹핑 비즈니스 로직
     public List<SearchSimpleResDto> convertToSimpleDto(List<SearchResDto> searchResDtos) {
 
         List<SearchSimpleResDto> laws = new ArrayList<>();        // 최종 법령들을 담을 리스트
-        SearchSimpleResDto prevSimpleDto = null;            // 한 법령에 연속된 조문일 경우, 갱신하기 위한 이전 법령
-        String lastLawSN = null;            // 마지막 조문 id 저장 - 연속된 항 판별용
+        SearchSimpleResDto prevSimpleDto = null;            // 같은 한 법령에 연속된 조문일 경우, 이전 법령에 데이터를 갱신하기 위해 이전 법령 저장
+        String lastLawSN = null;            // 마지막 법령 id 저장 - 연속된 조문 판별용
 
         for (SearchResDto searchResult : searchResDtos) {
             String lawSN = searchResult.getLawsn();
@@ -92,6 +93,7 @@ public class SearchService {
         return laws;
     }
 
+    // 상세 검색 - 법령, 조문, 항, 호 그룹핑 비즈니스 로직
     public List<SearchDetailResDto> convertToDetailDto(List<SearchResDto> searchResDtos) {
 
         // 최종 법령들을 담을 리스트
