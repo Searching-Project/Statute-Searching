@@ -20,10 +20,12 @@ public class PrecedentIndexTest {
     void jpa_contains_Test() {
         // given
         StopWatch stopWatch = new StopWatch();
+        Pageable pageable = PageRequest.of(1, 100);
 
         // when
         stopWatch.start();
-        precedentRepository.findAllByCaseNameContaining("부당해고");
+//        precedentRepository.findAllByCaseNameContaining("부당해고");
+        precedentRepository.findAllByCaseNameContaining("부당해고", pageable);
         stopWatch.stop();
 
         // then
@@ -35,10 +37,12 @@ public class PrecedentIndexTest {
     void like_Test() {
         // given
         StopWatch stopWatch = new StopWatch();
+        Pageable pageable = PageRequest.of(1, 100);
 
         // when
         stopWatch.start();
-        precedentRepository.findAllByCaseNameContaining("부당해고");
+//        precedentRepository.findAllByCaseNameContaining("부당해고");
+        precedentRepository.findAllByCaseNameContaining("부당해고", pageable);
         stopWatch.stop();
 
         // then
@@ -49,12 +53,12 @@ public class PrecedentIndexTest {
     @Test
     void fullTextSearch_Test() {
         // given
-        Pageable pageable = PageRequest.of(1, 10);
+        Pageable pageable = PageRequest.of(1, 100);
         StopWatch stopWatch = new StopWatch();
 
         // when
         stopWatch.start();
-//        precedentRepository.fullTextSearch("부당해고", pageable);
+        precedentRepository.fullTextSearch("부당해고", pageable);
         stopWatch.stop();
 
         // then
@@ -65,7 +69,7 @@ public class PrecedentIndexTest {
     @Test
     void fullTextSearch_ngram_Test() {
         // given
-        Pageable pageable = PageRequest.of(10, 100);
+        Pageable pageable = PageRequest.of(1, 100);
         StopWatch stopWatch = new StopWatch();
 
         // when

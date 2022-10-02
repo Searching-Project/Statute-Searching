@@ -11,11 +11,12 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface PrecedentRepository extends JpaRepository<Precedent, Long> {
-    List<Precedent> findAllByCaseNameContaining(String keyword);
+    Page<Precedent> findAllByCaseNameContaining(String keyword, Pageable pageable);
+//    List<Precedent> findAllByCaseNameContaining(String keyword);
 
     @Query("SELECT p FROM Precedent p WHERE p.caseName LIKE %:keyword%")
-    List<Precedent> searchByCaseNameLike(@Param("keyword")String keyword);
-
+    Page<Precedent> searchByCaseNameLike(@Param("keyword")String keyword, Pageable pageable);
+//    List<Precedent> searchByCaseNameLike(@Param("keyword")String keyword);
 
     @Query(value = "SELECT * FROM precedent WHERE MATCH(case_name, content, judge_holding, judge_reasoning)"
             + "AGAINST ('keyword' IN NATURAL LANGUAGE MODE)", nativeQuery = true)
